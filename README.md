@@ -14,3 +14,4 @@ Project organisation
     │                                              generated with `pip freeze > requirements.txt`
     │
     │── training                            <- Scripts to train models
+    |── training                            <- Scripts to test models
