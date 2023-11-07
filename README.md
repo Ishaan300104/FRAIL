@@ -1,8 +1,4 @@
-# FRAIL
-Face Recognition using AI with Low compute
 
-Project organisation
------------------
 
     ├── LICENSE
     ├── README.md                               <- The top-level README for developers using this project.
@@ -13,4 +9,4 @@ Project organisation
     ├── requirements.txt                        <- The requirements file for reproducing the analysis environment, e.g.
     │                                              generated with `pip freeze > requirements.txt`
     │
-    │── training                            <- Scripts to train models
+
