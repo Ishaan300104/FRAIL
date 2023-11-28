@@ -8,6 +8,7 @@ from torchmetrics import Metric
 from torch.utils.data import DataLoader
 from FRAIL.data.dataset import CustomDataset
 from FRAIL.models.ghostnet import GhostNet
+from FRAIL.training.loss import ArcfaceLoss
 
 
 class Trainer(pl.LightningModule):
@@ -16,7 +17,7 @@ class Trainer(pl.LightningModule):
         self.input_size = input_size #probably unecessary
         self.lr = learning_rate
         self.ghostnet = GhostNet(num_classes=num_classes)
-        self.loss_function = nn.CrossEntropyLoss
+        self.loss_function = ArcfaceLoss
 
     def forward(self, x):
         return self.ghostnet(x)
