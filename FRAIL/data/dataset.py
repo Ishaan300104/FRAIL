@@ -1,4 +1,5 @@
 from torch.utils.data import Dataset, DataLoader
+import config
 
 # Define a dummy dataset class
 class CustomDataset(Dataset):
@@ -20,7 +21,7 @@ train_file_path = "train.idx"
 dataset = CustomDataset(train_file_path)
 
 # Create a DataLoader
-dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
+dataloader = DataLoader(dataset, batch_size=config.batch_size, shuffle=True)
 
 for batch_idx, batch in enumerate(dataloader):
     # Print the batch number and its content
