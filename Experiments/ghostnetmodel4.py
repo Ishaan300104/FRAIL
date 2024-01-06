@@ -12,19 +12,6 @@ def _make_divisible(v, divisor, min_value=None):
         new_v += divisor
     return new_v
 
-def load_pretrained_weights(model, pretrained_weights_path):
-    # Load pre-trained weights
-    pretrained_dict = torch.load(pretrained_weights_path)
-    
-    # Filter out unnecessary keys
-    model_dict = model.state_dict()
-    pretrained_dict = {k: v for k, v in pretrained_dict.items() if k in model_dict}
-
-    # Update model's state_dict
-    model_dict.update(pretrained_dict)
-    model.load_state_dict(model_dict)
-
-
 class SELayer(nn.Module):
     def __init__(self, channel, reduction=4):
         super(SELayer, self).__init__()
@@ -90,7 +77,7 @@ class GhostBottleneck(nn.Module):
             self.shortcut = nn.Sequential()
         else:
             self.shortcut = nn.Sequential(
-                depthwise_conv(inp, inp, 3, stride, relu=False),
+                depthwise_conv(inp, inp, kernel_size, stride, relu=False),
                 nn.Conv2d(inp, oup, 1, 1, 0, bias=False),
                 nn.BatchNorm2d(oup),
             )
@@ -108,10 +95,8 @@ class GhostNet(nn.Module):
             nn.BatchNorm2d(output_channel),
             nn.ReLU(inplace=True)
         )]
-        
         input_channel = output_channel
         block = GhostBottleneck
-       
         for k, exp_size, c, use_se, s in self.cfgs:
             output_channel = _make_divisible(c * width_mult, 4)
             hidden_channel = _make_divisible(exp_size * width_mult, 4)
@@ -177,12 +162,6 @@ if __name__ == '__main__':
     model = ghost_net()
     model.eval()
     print(model)
-    pretrained_weights_path = (r"ghostnet.pth")  # Replace with the actual path
-    load_pretrained_weights(model, pretrained_weights_path)
-    
     input = torch.randn(32, 3, 224, 224)
     y = model(input)
-    print(y)    
-    num_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
-    print("Number of parameters: ", num_params)
-
+    print(y)
